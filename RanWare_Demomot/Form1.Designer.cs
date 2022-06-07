@@ -36,13 +36,15 @@
             this.lblTextFile = new System.Windows.Forms.Label();
             this.lblNbr = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.btnStop = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // btnDecrypt
             // 
-            this.btnDecrypt.Location = new System.Drawing.Point(590, 369);
+            this.btnDecrypt.Location = new System.Drawing.Point(558, 465);
             this.btnDecrypt.Name = "btnDecrypt";
             this.btnDecrypt.Size = new System.Drawing.Size(75, 23);
             this.btnDecrypt.TabIndex = 0;
@@ -52,18 +54,18 @@
             // 
             // txtBoxInput
             // 
-            this.txtBoxInput.Location = new System.Drawing.Point(412, 369);
+            this.txtBoxInput.Location = new System.Drawing.Point(244, 465);
             this.txtBoxInput.Name = "txtBoxInput";
             this.txtBoxInput.Size = new System.Drawing.Size(100, 23);
             this.txtBoxInput.TabIndex = 1;
             // 
             // lblTextMessage
             // 
-            this.lblTextMessage.Font = new System.Drawing.Font("Times New Roman", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblTextMessage.Font = new System.Drawing.Font("Times New Roman", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblTextMessage.ForeColor = System.Drawing.Color.White;
-            this.lblTextMessage.Location = new System.Drawing.Point(244, 9);
+            this.lblTextMessage.Location = new System.Drawing.Point(244, 22);
             this.lblTextMessage.Name = "lblTextMessage";
-            this.lblTextMessage.Size = new System.Drawing.Size(555, 303);
+            this.lblTextMessage.Size = new System.Drawing.Size(950, 305);
             this.lblTextMessage.TabIndex = 2;
             this.lblTextMessage.Text = resources.GetString("lblTextMessage.Text");
             // 
@@ -107,12 +109,37 @@
             this.pictureBox2.TabIndex = 6;
             this.pictureBox2.TabStop = false;
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(268, 362);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(76, 15);
+            this.linkLabel1.TabIndex = 7;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Acheter XMR";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // btnStop
+            // 
+            this.btnStop.AutoSize = true;
+            this.btnStop.Location = new System.Drawing.Point(992, 463);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(96, 25);
+            this.btnStop.TabIndex = 8;
+            this.btnStop.Text = "Stop the music";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            this.btnStop.MouseEnter += new System.EventHandler(this.btnStop_MouseEnter);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkRed;
-            this.ClientSize = new System.Drawing.Size(800, 410);
+            this.ClientSize = new System.Drawing.Size(1229, 500);
+            this.Controls.Add(this.btnStop);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.lblNbr);
             this.Controls.Add(this.lblTextFile);
@@ -142,5 +169,7 @@
         private Label lblTextFile;
         private Label lblNbr;
         private PictureBox pictureBox2;
+        private LinkLabel linkLabel1;
+        private Button btnStop;
     }
 }

