@@ -21,6 +21,7 @@ namespace RanWare_Demomot
         int numberOfSeconds = 0;//Compteur qui à toujours la même valeur que elapsedSecond mais qui va jusqu'au nimbre de seconde souhaité puis est remis à zéro
         double amount = 1.5;//Montant de la rançon
 
+
         Random randomPos = new Random();//Position random du bouton "Stop the muisc"
         SoundPlayer nyanPlayer = new SoundPlayer(@"Sound/Nyan.wav");//Son nyan
         SoundPlayer poneyPlayer = new SoundPlayer(@"Sound/poney.wav");//Son poney
