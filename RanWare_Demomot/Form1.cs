@@ -291,9 +291,6 @@ namespace RanWare_Demomot
                     int blockSizeBytes = aes.BlockSize / 8;
                     byte[] data = new byte[blockSizeBytes];
 
-                    // By decrypting a chunk a time,
-                    // you can save memory and
-                    // accommodate large files.
 
                     // Start at the beginning
                     // of the cipher text.
